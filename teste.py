@@ -63,5 +63,7 @@ for i in codes: #percorre a lista código por código
                     time.sleep(3)
                     pyautogui.hotkey('ctrl', 's')
                     pyautogui.press('enter')
-                    campo_origem = '/Downloads/'
+                    campo_origem = '/Downloads/teste.pdf'
+                    pasta_pdfs = ivan
+                    hhhnjunjnjnhnhbhbgybb
       
