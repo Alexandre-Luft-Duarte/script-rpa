@@ -29,7 +29,7 @@ for i in codes:
         pyautogui.hotkey('ctrl', 'v')
         pyautogui.press('enter')
         pyperclip.copy("")
-        pyautogui.click('imagens/caixa_selecionar.png', confidence=0.8)
+        pyautogui.click(x = 565, y =554)
         time.sleep(1)
         posicao_marcacao = pyautogui.locateCenterOnScreen('imagens/marcacao.png', confidence=0.8)
         print(f"Posição da marcação encontrada: {posicao_marcacao}")
