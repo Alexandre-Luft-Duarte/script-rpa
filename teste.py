@@ -2,8 +2,6 @@ import pyautogui
 import time
 import csv
 import pyperclip
-import shutil
-import os
 
 time.sleep(2)
 pyautogui.PAUSE = 1
