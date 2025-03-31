@@ -1,58 +1,38 @@
-import pyautogui
 import time
-import csv
+import pyautogui
 import pyperclip
+from utils import ler_codigos_csv, localizar_imagem
 
-time.sleep(2)
 pyautogui.PAUSE = 1
 
-codes = list()  # Cria uma lista para colocar os códigos dos imóveis
-with open("arquivo/iptu_96_25032025.csv", "r") as arquivo:
-    reader = csv.DictReader(arquivo, delimiter=';')
-    for row in reader:
-        codes.append(row['imovel_prefeitura'])
-
-for i in codes:
-    print(f"Processando código: {i}")
-    pyperclip.copy(i)
+def processar_codigo(codigo):
+    """
+    Processa um único código de imóvel, executando a sequência de automação necessária.
+    :param codigo: Código do imóvel.
+    """
+    pyperclip.copy(codigo)
     time.sleep(1)
-
-    try:
-        posicao_campo = pyautogui.locateCenterOnScreen('imagens/codigo_campo.png', confidence=0.8)
-        print(f"Posição do campo encontrada: {posicao_campo}")
-    except pyautogui.ImageNotFoundException:
-        posicao_campo = None
-        print("Imagem 'codigo_campo.png' não encontrada.")
-
+    
+    posicao_campo = localizar_imagem('imagens/codigo_campo.png')
     if posicao_campo:
         pyautogui.click(posicao_campo)
         pyautogui.hotkey('ctrl', 'v')
         pyautogui.press('enter')
         pyperclip.copy("")
-        pyautogui.click(x = 565, y =554)
+        pyautogui.click('imagens/caixa_selecionar.png')
         time.sleep(1)
-        posicao_marcacao = pyautogui.locateCenterOnScreen('imagens/marcacao.png', confidence=0.8)
-        print(f"Posição da marcação encontrada: {posicao_marcacao}")
+        posicao_marcacao = localizar_imagem('imagens/marcacao.png')
         if posicao_marcacao:
             pyautogui.click(posicao_marcacao)
-            pyautogui.click('imagens/emissao.png', confidence=0.8)
+            pyautogui.click('imagens/emissao.png')
             pyautogui.hotkey('ctrl', 's')
             pyautogui.press('enter')
-        else:
-            print("Imagem 'marcacao.png' não encontrada.")
     else:
-        try:
-            posicao_consulta = pyautogui.locateCenterOnScreen('imagens/campo_de_consulta.png', confidence=0.8)
-            print(f"Posição do campo de consulta encontrada: {posicao_consulta}")
-        except pyautogui.ImageNotFoundException:
-            posicao_consulta = None
-            print("Imagem 'campo_de_consulta.png' não encontrada.")
-
+        posicao_consulta = localizar_imagem('imagens/campo_de_consulta.png')
         if posicao_consulta:
             pyautogui.click(posicao_consulta)
             time.sleep(1)
-            posicao_campo_2 = pyautogui.locateCenterOnScreen('imagens/codigo_campo_2.png', confidence=0.8)
-            print(f"Posição do campo de código (2) encontrada: {posicao_campo_2}")
+            posicao_campo_2 = localizar_imagem('imagens/codigo_campo_2.png')
             if posicao_campo_2:
                 pyautogui.doubleClick(posicao_campo_2)
                 pyautogui.hotkey('ctrl', 'a')
@@ -60,9 +40,19 @@ for i in codes:
                 pyautogui.hotkey('ctrl', 'v')
                 pyautogui.press('enter')
                 pyperclip.copy("")
-                pyautogui.click('imagens/caixa_selecionar.png', confidence=0.8)
+                pyautogui.click('imagens/caixa_selecionar.png')
                 time.sleep(1)
-            else:
-                print("Imagem 'codigo_campo_2.png' não encontrada.")
-        else:
-            print("Nenhuma imagem de campo encontrada para esse código.")
+
+def main():
+    """
+    Função principal que inicia a automação.
+    """
+    time.sleep(2)  # Aguarda 2 segundos para preparar a interface
+    caminho_csv = "arquivo/iptu_96_25032025.csv"
+    codigos = ler_codigos_csv(caminho_csv)
+    
+    for codigo in codigos:
+        processar_codigo(codigo)
+    
+if __name__ == '__main__':
+    main()
