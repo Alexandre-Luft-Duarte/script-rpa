@@ -24,9 +24,9 @@ def processar_codigo(codigo):
         posicao_marcacao = localizar_imagem('imagens/marcacao.png', confidence=0.8)
         if posicao_marcacao:
             pyautogui.click(posicao_marcacao)
-            #pyautogui.click('imagens/emissao.png')
-            #time.sleep(7)
-            #pyautogui.click('imagens/baixar.png')
+            pyautogui.click('imagens/emissao.png')
+            time.sleep(7)
+            pyautogui.click('imagens/baixar.png')
     else:
         posicao_consulta = localizar_imagem('imagens/campo_de_consulta.png', confidence=0.8)
         if posicao_consulta:
