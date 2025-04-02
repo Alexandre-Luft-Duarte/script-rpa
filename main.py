@@ -2,6 +2,7 @@ import time
 import pyautogui
 import pyperclip
 from utils import ler_codigos_csv
+from utils import verificar_e_clicar_primeira_opcao
 
 pyautogui.PAUSE = 1
 time.sleep(2)
@@ -29,7 +30,9 @@ def processar_codigo(codigo, primeira_vez=False):
         
         # Clicar no campo de código e colar o código
         pyautogui.click(COORDENADAS['campo_de_consulta'])
-        pyautogui.doubleClick(COORDENADAS['codigo_campo_2'])
+        pyautogui.click(COORDENADAS['codigo_campo_2'])
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
         pyautogui.hotkey('ctrl', 'v')
         pyautogui.press('enter')
         pyperclip.copy("")  # Limpar a área de transferência
@@ -57,6 +60,7 @@ def processar_codigo(codigo, primeira_vez=False):
         # Clicar na marcação do imóvel
         marcacao = pyautogui.locateCenterOnScreen('imagens/marcacao.png', confidence=0.8)
         pyautogui.click(marcacao)
+
 
 def main():
     """

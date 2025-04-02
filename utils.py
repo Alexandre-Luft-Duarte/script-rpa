@@ -1,5 +1,7 @@
 import csv
 import os
+import pyautogui
+import time
 
 def ler_codigos_csv(caminho_csv):
     """
@@ -15,3 +17,19 @@ def ler_codigos_csv(caminho_csv):
         for row in reader:
             codigos.append(row['imovel_prefeitura'])
     return codigos
+
+
+def verificar_e_clicar_primeira_opcao(confidence=0.8, timeout=3):
+    """
+    Verifica se a imagem da primeira opção de parcelamento ('imagens/primeira_opcao.png')
+    está presente na tela. Se encontrada, clica nela e retorna True; caso contrário, retorna False.
+    """
+    inicio = time.time()
+    while time.time() - inicio < timeout:
+        posicao = pyautogui.locateCenterOnScreen('imagens/imagem_parcelas.png', confidence=confidence)
+        if posicao:
+            pyautogui.click(posicao)
+            time.sleep(1)
+            return True
+        time.sleep(0.5)
+    return False
