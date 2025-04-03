@@ -24,7 +24,6 @@ def verificar_e_clicar_primeira_opcao(confidence=0.8, timeout=3):
     Verifica se a imagem da primeira opção de parcelamento ('imagens/imagem_parcelas.png')
     está presente na tela. Se encontrada, clica nela e retorna True; caso contrário, retorna False.
     """
-    import time
     inicio = time.time()
     while time.time() - inicio < timeout:
         try:
@@ -39,3 +38,15 @@ def verificar_e_clicar_primeira_opcao(confidence=0.8, timeout=3):
         time.sleep(0.5)
     return False  # Imagem não encontrada dentro do tempo estipulado
 
+
+def sem_iptu(confidence=0.9, timeout=3):
+    inicio = time.time()
+    while time.time() - inicio < timeout:
+        try:
+            not_iptu = pyautogui.locateAllOnScreen('imagens/semiptu.png', confidence=confidence)
+        except pyautogui.ImageNotFoundException:
+            not_iptu = None
+
+        if not_iptu:
+            return True
+    return False

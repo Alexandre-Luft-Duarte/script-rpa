@@ -3,6 +3,7 @@ import pyautogui
 import pyperclip
 from utils import ler_codigos_csv
 from utils import verificar_e_clicar_primeira_opcao
+from utils import sem_iptu
 
 pyautogui.PAUSE = 1
 time.sleep(2)
@@ -37,12 +38,16 @@ def processar_codigo(codigo, primeira_vez=False):
         pyautogui.hotkey('ctrl', 'v')
         pyautogui.press('enter')
         pyperclip.copy("")  # Limpar a área de transferência
-
+24620
+        if sem_iptu(confidence=0.8, timeout=3):
+            print('Sem IPTU. Pulando imóvel!')
+            return
+        
         # Clicar na caixa de seleção
         pyautogui.click(COORDENADAS['caixa_selecionar2'])
         time.sleep(1)
 
-        result = verificar_e_clicar_primeira_opcao(confidence=0.8, timeout=3)
+        result = verificar_e_clicar_primeira_opcao(confidence=0.9, timeout=3)
         if result:
             print('sim')
         else:
@@ -62,6 +67,10 @@ def processar_codigo(codigo, primeira_vez=False):
         pyautogui.press('enter')
         pyperclip.copy("")  # Limpar a área de transferência
 
+        if sem_iptu(confidence=0.8, timeout=3):
+            print('Sem IPTU. Pulando imóvel!')
+            return
+     
         # Clicar na caixa de seleção
         pyautogui.click(COORDENADAS['caixa_selecionar'])
         time.sleep(1)
