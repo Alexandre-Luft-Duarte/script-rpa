@@ -1,6 +1,7 @@
 import time
 import pyautogui
 import pyperclip
+
 from utils import ler_codigos_csv
 from utils import verificar_e_clicar_primeira_opcao
 from utils import sem_iptu
@@ -93,7 +94,6 @@ def main():
     time.sleep(2)  # Aguarda 2 segundos para preparar a interface
     caminho_csv = "arquivo/iptu_96_25032025.csv"
     codigos = ler_codigos_csv(caminho_csv)
-    
     # Processa o primeiro código sem o clique extra
     if codigos:
         processar_codigo(codigos[0], primeira_vez=True)
@@ -101,7 +101,6 @@ def main():
     # Processa os demais com o clique adicional no campo de consulta
     for codigo in codigos[1:]:
         processar_codigo(codigo)
-
     
 if __name__ == '__main__':
     main()
