@@ -2,6 +2,7 @@ import csv
 import os
 import pyautogui
 import time
+import pyscreeze
 
 def ler_codigos_csv(caminho_csv):
     """
@@ -38,15 +39,15 @@ def verificar_e_clicar_primeira_opcao(confidence=0.8, timeout=3):
         time.sleep(0.5)
     return False  # Imagem não encontrada dentro do tempo estipulado
 
-
-def sem_iptu(confidence=0.9, timeout=3):
+def sem_iptu(confidence=0.9, timeout=3, region=(880, 356, 450, 50)):
     inicio = time.time()
     while time.time() - inicio < timeout:
         try:
-            not_iptu = pyautogui.locateAllOnScreen('imagens/semiptu.png', confidence=confidence)
-        except pyautogui.ImageNotFoundException:
-            not_iptu = None
-
-        if not_iptu:
+            resultados = list(pyautogui.locateAllOnScreen('imagens/semiptu.png', confidence=confidence, region=region))
+        except pyscreeze.ImageNotFoundException:
+            resultados = []
+        
+        if resultados:
             return True
+        time.sleep(0.5)
     return False
