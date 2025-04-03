@@ -21,15 +21,21 @@ def ler_codigos_csv(caminho_csv):
 
 def verificar_e_clicar_primeira_opcao(confidence=0.8, timeout=3):
     """
-    Verifica se a imagem da primeira opção de parcelamento ('imagens/primeira_opcao.png')
+    Verifica se a imagem da primeira opção de parcelamento ('imagens/imagem_parcelas.png')
     está presente na tela. Se encontrada, clica nela e retorna True; caso contrário, retorna False.
     """
+    import time
     inicio = time.time()
     while time.time() - inicio < timeout:
-        posicao = pyautogui.locateCenterOnScreen('imagens/imagem_parcelas.png', confidence=confidence)
+        try:
+            posicao = pyautogui.locateCenterOnScreen('imagens/imagem_parcelas.png', confidence=confidence)
+        except pyautogui.ImageNotFoundException:
+            posicao = None  # Trata a exceção atribuindo None a posicao
+        
         if posicao:
             pyautogui.click(posicao)
             time.sleep(1)
-            return True
+            return True  # Imagem encontrada e clicada
         time.sleep(0.5)
-    return False
+    return False  # Imagem não encontrada dentro do tempo estipulado
+

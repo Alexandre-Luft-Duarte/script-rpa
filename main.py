@@ -31,18 +31,27 @@ def processar_codigo(codigo, primeira_vez=False):
         # Clicar no campo de código e colar o código
         pyautogui.click(COORDENADAS['campo_de_consulta'])
         pyautogui.click(COORDENADAS['codigo_campo_2'])
+
         pyautogui.hotkey('ctrl', 'a')
         pyautogui.press('delete')
         pyautogui.hotkey('ctrl', 'v')
         pyautogui.press('enter')
         pyperclip.copy("")  # Limpar a área de transferência
+
         # Clicar na caixa de seleção
         pyautogui.click(COORDENADAS['caixa_selecionar2'])
         time.sleep(1)
+
+        result = verificar_e_clicar_primeira_opcao(confidence=0.8, timeout=3)
+        if result:
+            print('sim')
+        else:
+            print('não')
+
         # Clicar na marcação do imóvel
         marcacao2 = pyautogui.locateCenterOnScreen('imagens/marcacao.png', confidence=0.8)
         pyautogui.click(marcacao2)
-        # Copiar o código para a área de transferência
+
     else:
         pyperclip.copy(codigo)
         time.sleep(1)
@@ -57,10 +66,15 @@ def processar_codigo(codigo, primeira_vez=False):
         pyautogui.click(COORDENADAS['caixa_selecionar'])
         time.sleep(1)
         
+        result = verificar_e_clicar_primeira_opcao(confidence=0.8, timeout=3)
+        if result:
+            print('sim')
+        else:
+            print('não')
+
         # Clicar na marcação do imóvel
         marcacao = pyautogui.locateCenterOnScreen('imagens/marcacao.png', confidence=0.8)
         pyautogui.click(marcacao)
-
 
 def main():
     """
