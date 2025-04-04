@@ -17,20 +17,20 @@ COORDENADAS = {
     'campo_de_consulta': (645, 366),     
     'codigo_campo_2': (1076, 448),
     'caixa_selecionar2': (564, 556),
+    'campo_de_consulta2': (705, 416),
 }
 
 def processar_codigo(codigo, primeira_vez=False):
     """
     Processa um único código de imóvel, executando a sequência de automação utilizando coordenadas fixas.
+    Se a mensagem "sem IPTU" for detectada, o fluxo para esse imóvel é interrompido (usando return).
     :param codigo: Código do imóvel.
     """
-
     if not primeira_vez:
-        # Copiar o código para a área de transferência
         pyperclip.copy(codigo)
         time.sleep(1)
         
-        # Clicar no campo de código e colar o código
+        # Clicar no campo de consulta e no campo de código alternativo
         pyautogui.click(COORDENADAS['campo_de_consulta'])
         pyautogui.click(COORDENADAS['codigo_campo_2'])
 
@@ -40,23 +40,23 @@ def processar_codigo(codigo, primeira_vez=False):
         pyautogui.press('enter')
         pyperclip.copy("")  # Limpar a área de transferência
 
-        if sem_iptu(confidence=0.8, timeout=3, region = (880, 356, 450, 50)):
+        # Verifica se a mensagem "sem IPTU" apareceu; se sim, pula esse imóvel.
+        if sem_iptu(confidence=0.9, timeout=3, region=(880, 356, 450, 50)):
             print('Sem IPTU. Pulando imóvel!')
-            return
+            return  # Interrompe a função para esse imóvel
         
-        # Clicar na caixa de seleção
+        # Continuar com os demais comandos se IPTU estiver presente
         pyautogui.click(COORDENADAS['caixa_selecionar2'])
         time.sleep(1)
 
-        result = verificar_e_clicar_primeira_opcao(confidence=0.9, timeout=3)
-        if result:
-            print('sim')
-        else:
-            print('não')
+        verificar_e_clicar_primeira_opcao(confidence=0.9, timeout=3)
 
-        # Clicar na marcação do imóvel
-        marcacao2 = pyautogui.locateCenterOnScreen('imagens/marcacao.png', confidence=0.8)
-        pyautogui.click(marcacao2)
+        try:
+            marcacao2 = pyautogui.locateCenterOnScreen('imagens/marcar_todas.png', confidence=0.8)
+            pyautogui.click(marcacao2)
+        except pyautogui.ImageNotFoundException:
+            print("Imagem de marcação não encontrada. Pulando imóvel!")
+            return
 
     else:
         pyperclip.copy(codigo)
@@ -68,23 +68,23 @@ def processar_codigo(codigo, primeira_vez=False):
         pyautogui.press('enter')
         pyperclip.copy("")  # Limpar a área de transferência
 
-        if sem_iptu(confidence=0.8, timeout=3, region = (880, 356, 450, 50)):
+        if sem_iptu(confidence=0.9, timeout=3, region=(880, 356, 450, 50)):
             print('Sem IPTU. Pulando imóvel!')
             return
      
-        # Clicar na caixa de seleção
         pyautogui.click(COORDENADAS['caixa_selecionar'])
         time.sleep(1)
         
-        result = verificar_e_clicar_primeira_opcao(confidence=0.8, timeout=3)
-        if result:
-            print('sim')
-        else:
-            print('não')
+        verificar_e_clicar_primeira_opcao(confidence=0.9, timeout=3)
 
-        # Clicar na marcação do imóvel
-        marcacao = pyautogui.locateCenterOnScreen('imagens/marcacao.png', confidence=0.8)
-        pyautogui.click(marcacao)
+        try:
+            marcacao = pyautogui.locateCenterOnScreen('imagens/marcar_todas.png', confidence=0.8)
+            pyautogui.click(marcacao)
+        except pyautogui.ImageNotFoundException:
+            print("Imagem de marcação não encontrada. Pulando imóvel!")
+            return
+
+        #pyautogui.click(x=1161, y=896)
 
 def main():
     """
