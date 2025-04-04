@@ -1,5 +1,8 @@
 import csv
 import os
+import pyautogui
+import time
+import pyscreeze
 
 def ler_codigos_csv(caminho_csv):
     """
@@ -15,3 +18,36 @@ def ler_codigos_csv(caminho_csv):
         for row in reader:
             codigos.append(row['imovel_prefeitura'])
     return codigos
+
+
+def verificar_e_clicar_primeira_opcao(confidence=0.8, timeout=3):
+    """
+    Verifica se a imagem da primeira opção de parcelamento ('imagens/imagem_parcelas.png')
+    está presente na tela. Se encontrada, clica nela e retorna True; caso contrário, retorna False.
+    """
+    inicio = time.time()
+    while time.time() - inicio < timeout:
+        try:
+            posicao = pyautogui.locateCenterOnScreen('imagens/imagem_parcelas.png', confidence=confidence)
+        except pyautogui.ImageNotFoundException:
+            posicao = None  # Trata a exceção atribuindo None a posicao
+        
+        if posicao:
+            pyautogui.click(posicao)
+            time.sleep(1)
+            return True  # Imagem encontrada e clicada
+        time.sleep(0.5)
+    return False  # Imagem não encontrada dentro do tempo estipulado
+
+def sem_iptu(confidence=0.9, timeout=3, region=(880, 356, 450, 50)):
+    inicio = time.time()
+    while time.time() - inicio < timeout:
+        try:
+            resultados = list(pyautogui.locateAllOnScreen('imagens/semiptu.png', confidence=confidence, region=region))
+        except pyscreeze.ImageNotFoundException:
+            resultados = []
+        
+        if resultados:
+            return True
+        time.sleep(0.5)
+    return False
