@@ -46,7 +46,7 @@ def sem_iptu(confidence=0.9, timeout=3, region=(880, 356, 450, 50)):
             resultados = list(pyautogui.locateAllOnScreen('imagens/semiptu.png', confidence=confidence, region=region))
         except pyscreeze.ImageNotFoundException:
             resultados = []
-        
+            
         if resultados:
             return True
         time.sleep(0.5)

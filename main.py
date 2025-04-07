@@ -85,7 +85,7 @@ def processar_codigo(codigo, primeira_vez=False):
             return
 
         #pyautogui.click(x=1161, y=896)
-
+ 
 def main():
     """
     Função principal que inicia a automação.
